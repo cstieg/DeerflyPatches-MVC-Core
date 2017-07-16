@@ -1,0 +1,9 @@
+C:\Users\user\Google Drive\Code\deerflypatches.com\DeerflyPatches\DeerflyPatches\bin\Debug\netcoreapp1.1\DeerflyPatches.deps.json
+C:\Users\user\Google Drive\Code\deerflypatches.com\DeerflyPatches\DeerflyPatches\bin\Debug\netcoreapp1.1\DeerflyPatches.runtimeconfig.json
+C:\Users\user\Google Drive\Code\deerflypatches.com\DeerflyPatches\DeerflyPatches\bin\Debug\netcoreapp1.1\DeerflyPatches.runtimeconfig.dev.json
+C:\Users\user\Google Drive\Code\deerflypatches.com\DeerflyPatches\DeerflyPatches\bin\Debug\netcoreapp1.1\DeerflyPatches.dll
+C:\Users\user\Google Drive\Code\deerflypatches.com\DeerflyPatches\DeerflyPatches\bin\Debug\netcoreapp1.1\DeerflyPatches.pdb
+C:\Users\user\Google Drive\Code\deerflypatches.com\DeerflyPatches\DeerflyPatches\obj\Debug\netcoreapp1.1\DeerflyPatches.csprojResolveAssemblyReference.cache
+C:\Users\user\Google Drive\Code\deerflypatches.com\DeerflyPatches\DeerflyPatches\obj\Debug\netcoreapp1.1\DeerflyPatches.AssemblyInfo.cs
+C:\Users\user\Google Drive\Code\deerflypatches.com\DeerflyPatches\DeerflyPatches\obj\Debug\netcoreapp1.1\DeerflyPatches.dll
+C:\Users\user\Google Drive\Code\deerflypatches.com\DeerflyPatches\DeerflyPatches\obj\Debug\netcoreapp1.1\DeerflyPatches.pdb
