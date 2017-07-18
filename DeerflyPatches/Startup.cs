@@ -58,7 +58,7 @@ namespace DeerflyPatches
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=DFP}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

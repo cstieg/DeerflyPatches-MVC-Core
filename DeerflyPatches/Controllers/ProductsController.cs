@@ -167,7 +167,6 @@ namespace DeerflyPatches.Controllers
                 editedProduct.Price = product.Price;
                 editedProduct.Shipping = product.Shipping;
                 editedProduct.Category = product.Category;
-               
 
                 try
                 {
