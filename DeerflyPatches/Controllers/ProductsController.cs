@@ -6,16 +6,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DeerflyPatches.Models;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace DeerflyPatches.Controllers
 {
     public class ProductsController : Controller
     {
+        private IHostingEnvironment _env;
         private readonly DeerflyPatchesContext _context;
 
-        public ProductsController(DeerflyPatchesContext context)
+        public ProductsController(IHostingEnvironment env, DeerflyPatchesContext context)
         {
-            _context = context;    
+            _context = context;
+            _env = env;
         }
 
         // GET: Products
@@ -53,11 +57,46 @@ namespace DeerflyPatches.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Description,Price,Shipping,ImageURL,Category")] Product product)
+        public async Task<IActionResult> Create(ViewModels.ProductVM product)
         {
+            var validImageTypes = new string[]
+            {
+                "image/gif",
+                "image/jpeg",
+                "image/png"
+            };
+            
+            if (product.ImageUpload == null || product.ImageUpload.Length == 0)
+            {
+                ModelState.AddModelError("ImageUpload", "This field is required");
+            }
+            else if (!validImageTypes.Contains(product.ImageUpload.ContentType))
+            {
+                ModelState.AddModelError("ImageUpload", "Please choose either a GIF, JPG or PNG image.");
+            }
             if (ModelState.IsValid)
             {
-                _context.Add(product);
+                // Copy ViewModel info to Model
+                var newProduct = new Product()
+                {
+                    Name = product.Name,
+                    Description = product.Description,
+                    Price = product.Price,
+                    Shipping = product.Shipping,
+                    Category = product.Category
+                };
+
+                // Save image to disk and store filepath in model
+                if (product.ImageUpload != null && product.ImageUpload.Length != 0)
+                {
+                    var imageDir = "~/images";
+                    var imagePath = Path.Combine(_env.WebRootPath, "images", product.ImageUpload.FileName);
+                    var imageUrl = Path.Combine(imageDir, product.ImageUpload.FileName);
+                    product.ImageUpload.CopyTo(new FileStream(imagePath, FileMode.Create));
+                    newProduct.ImageURL = imageUrl;
+                }
+
+                _context.Add(newProduct);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
