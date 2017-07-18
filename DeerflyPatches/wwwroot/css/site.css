@@ -60,7 +60,10 @@ textarea {
     margin: auto;
 }
 
-.row, 
+.row {
+    height: auto;
+}
+ 
 .row-height {
     height: 300px;
 }
@@ -89,4 +92,29 @@ textarea {
     margin: 0 auto;
     display: inline-block;
     border-radius: 14px;
+}
+
+
+
+
+/* Order Page */
+.product-item {
+    height: auto;
+    margin-bottom: 30px;
+}
+
+.product-item * {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.product-image {
+    width: 200px;
+    height: 220px;
+    margin: 5px auto;
+}
+
+.image-wrapper {
+    width: 100%;
 }

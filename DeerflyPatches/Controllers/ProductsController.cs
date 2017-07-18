@@ -93,9 +93,10 @@ namespace DeerflyPatches.Controllers
                 // Save image to disk and store filepath in model
                 if (product.ImageUpload != null && product.ImageUpload.Length != 0)
                 {
-                    var imageDir = "~/images";
+                    var imageDir = "/images";
                     var imagePath = Path.Combine(_env.WebRootPath, "images", product.ImageUpload.FileName);
-                    var imageUrl = Path.Combine(imageDir, product.ImageUpload.FileName);
+                    //var imageUrl = Path.Combine(imageDir, product.ImageUpload.FileName);
+                    var imageUrl = imageDir + "/" + product.ImageUpload.FileName;
                     product.ImageUpload.CopyTo(new FileStream(imagePath, FileMode.Create));
                     newProduct.ImageURL = imageUrl;
                 }
@@ -167,6 +168,17 @@ namespace DeerflyPatches.Controllers
                 editedProduct.Price = product.Price;
                 editedProduct.Shipping = product.Shipping;
                 editedProduct.Category = product.Category;
+
+                // Save image to disk and store filepath in model
+                if (product.ImageUpload != null && product.ImageUpload.Length != 0)
+                {
+                    var imageDir = "/images";
+                    var imagePath = Path.Combine(_env.WebRootPath, "images", product.ImageUpload.FileName);
+                    //var imageUrl = Path.Combine(imageDir, product.ImageUpload.FileName);
+                    var imageUrl = imageDir + "/" + product.ImageUpload.FileName;
+                    product.ImageUpload.CopyTo(new FileStream(imagePath, FileMode.Create));
+                    editedProduct.ImageURL = imageUrl;
+                }
 
                 try
                 {
