@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DeerflyPatches.Models;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using DeerflyPatches.ViewModels;
 
 namespace DeerflyPatches.Controllers
 {
@@ -15,6 +16,12 @@ namespace DeerflyPatches.Controllers
     {
         private IHostingEnvironment _env;
         private readonly DeerflyPatchesContext _context;
+        private string[] validImageTypes = new string[]
+        {
+            "image/gif",
+            "image/jpeg",
+            "image/png"
+        };
 
         public ProductsController(IHostingEnvironment env, DeerflyPatchesContext context)
         {
@@ -49,6 +56,7 @@ namespace DeerflyPatches.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
+            // Pass ViewModel instead of Model
             return View(new ViewModels.ProductVM());
         }
 
@@ -57,15 +65,9 @@ namespace DeerflyPatches.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ViewModels.ProductVM product)
+        public async Task<IActionResult> Create([Bind("ID,Name,Description,Price,Shipping,ImageUpload,Category")] ViewModels.ProductVM product)
         {
-            var validImageTypes = new string[]
-            {
-                "image/gif",
-                "image/jpeg",
-                "image/png"
-            };
-            
+            // validate image upload
             if (product.ImageUpload == null || product.ImageUpload.Length == 0)
             {
                 ModelState.AddModelError("ImageUpload", "This field is required");
@@ -74,11 +76,13 @@ namespace DeerflyPatches.Controllers
             {
                 ModelState.AddModelError("ImageUpload", "Please choose either a GIF, JPG or PNG image.");
             }
+
             if (ModelState.IsValid)
             {
                 // Copy ViewModel info to Model
                 var newProduct = new Product()
                 {
+                    ID = product.ID,
                     Name = product.Name,
                     Description = product.Description,
                     Price = product.Price,
@@ -116,7 +120,19 @@ namespace DeerflyPatches.Controllers
             {
                 return NotFound();
             }
-            return View(product);
+
+            // Copy Model info to ViewModel
+            var productVM = new ProductVM()
+            {
+                ID = product.ID,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                Shipping = product.Shipping,
+                Category = product.Category
+            };
+
+            return View(productVM);
         }
 
         // POST: Products/Edit/5
@@ -124,18 +140,38 @@ namespace DeerflyPatches.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Description,Price,Shipping,ImageURL,Category")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Description,Price,Shipping,ImageUpload,Category")] ProductVM product)
         {
             if (id != product.ID)
             {
                 return NotFound();
             }
 
+            // validate image upload
+            if (product.ImageUpload == null || product.ImageUpload.Length == 0)
+            {
+                ModelState.AddModelError("ImageUpload", "This field is required");
+            }
+            else if (!validImageTypes.Contains(product.ImageUpload.ContentType))
+            {
+                ModelState.AddModelError("ImageUpload", "Please choose either a GIF, JPG or PNG image.");
+            }
+
+
             if (ModelState.IsValid)
             {
+                // Copy ViewModel info to Model
+                var editedProduct =_context.Product.Find(id);
+                editedProduct.Name = product.Name;
+                editedProduct.Description = product.Description;
+                editedProduct.Price = product.Price;
+                editedProduct.Shipping = product.Shipping;
+                editedProduct.Category = product.Category;
+               
+
                 try
                 {
-                    _context.Update(product);
+                    _context.Update(editedProduct);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
