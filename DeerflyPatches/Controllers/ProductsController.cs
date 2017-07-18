@@ -45,7 +45,7 @@ namespace DeerflyPatches.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
-            return View();
+            return View(new ViewModels.ProductVM());
         }
 
         // POST: Products/Create

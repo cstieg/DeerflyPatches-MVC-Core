@@ -4,16 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace DeerflyPatches.Models
+namespace DeerflyPatches.ViewModels
 {
-    public class Product
+    public class ProductVM
     {
-        public int ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
         public decimal Shipping { get; set; }
-        public string ImageURL { get; set; }
+        public IFormFile ImageUpload { get; set; }
         public string Category { get; set; }
     }
 }
