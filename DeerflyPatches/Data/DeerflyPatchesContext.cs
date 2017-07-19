@@ -19,5 +19,7 @@ namespace DeerflyPatches.Models
         public DbSet<DeerflyPatches.Models.Product> Product { get; set; }
 
         public DbSet<DeerflyPatches.Models.Address> Address { get; set; }
+
+        public DbSet<DeerflyPatches.Models.Order> Order { get; set; }
     }
 }
