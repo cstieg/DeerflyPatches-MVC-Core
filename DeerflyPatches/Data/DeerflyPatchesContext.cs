@@ -17,5 +17,7 @@ namespace DeerflyPatches.Models
         public DbSet<DeerflyPatches.Models.Customer> Customer { get; set; }
 
         public DbSet<DeerflyPatches.Models.Product> Product { get; set; }
+
+        public DbSet<DeerflyPatches.Models.Address> Address { get; set; }
     }
 }
