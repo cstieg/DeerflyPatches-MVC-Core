@@ -21,5 +21,7 @@ namespace DeerflyPatches.Models
         public DbSet<DeerflyPatches.Models.Address> Address { get; set; }
 
         public DbSet<DeerflyPatches.Models.Order> Order { get; set; }
+
+        public DbSet<DeerflyPatches.Models.OrderDetail> OrderDetail { get; set; }
     }
 }

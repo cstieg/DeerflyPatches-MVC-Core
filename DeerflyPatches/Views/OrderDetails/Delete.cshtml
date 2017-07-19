@@ -1,0 +1,53 @@
+@model DeerflyPatches.Models.OrderDetail
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>OrderDetail</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <input type="hidden" asp-for="ID" />
+        <dt>
+            @Html.DisplayNameFor(model => model.PlacedInCart)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PlacedInCart)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UnitPrice)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UnitPrice)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Shipping)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Shipping)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CheckedOut)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CheckedOut)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>
