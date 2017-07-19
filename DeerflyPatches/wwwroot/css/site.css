@@ -8,6 +8,7 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    height: auto;
 }
 
 .row {
@@ -17,6 +18,10 @@
 
 .centered {
     margin: auto;
+}
+
+.container {
+    height: auto;
 }
 
 .image-square-rounded {
@@ -31,6 +36,7 @@
 .background-image {
     position: absolute;
     width: 100%;
+    max-height: 290px;
 }
 
 .foreground-text {
@@ -39,13 +45,16 @@
     padding: 50px 40px 20px 100px;
 }
 
- 
+.button-container {
+    margin: auto;
+} 
 
 
 
 /* Order Page */
 .product-item {
     height: auto;
+    margin-top: 12px;
     margin-bottom: 30px;
 }
 

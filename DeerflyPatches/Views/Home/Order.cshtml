@@ -7,14 +7,18 @@
 <div class="container">
     <div class="row">
 @foreach (var item in Model) {
-        <div class="col-md-3 product-item">
+        <article class="col-md-3 product-item">
             <div class="image-wrapper">
                 <img class="product-image" src="@item.ImageURL" alt="@item.Name" />
             </div>
             <h4 class="product-name">@item.Name</h4>
             <p class="product-description">@item.Description</p>
             <p class="product-price">$@item.Price</p>
-        </div>
+            <div class="button-container">
+                <button class="btn">Buy Now</button>
+                <button class="btn">Add to Shopping Cart</button>
+            </div>
+        </article>
 }
     </div>
 </div>
