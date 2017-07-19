@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using DeerflyPatches.Models;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace DeerflyPatches
 {
@@ -34,6 +35,18 @@ namespace DeerflyPatches
 
             services.AddDbContext<DeerflyPatchesContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DeerflyPatchesContext")));
+
+            // cookies
+            services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
+
+            // session
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
+                options.CookieName = ".DeerflyPatches.Session";
+            });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,12 +67,17 @@ namespace DeerflyPatches
 
             app.UseStaticFiles();
 
+            app.UseSession();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+
+
         }
     }
 }
