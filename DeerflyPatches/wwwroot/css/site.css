@@ -10,79 +10,13 @@
     padding-right: 15px;
 }
 
-/* Set widths on the form inputs since otherwise they're 100% wide */
-input,
-select,
-textarea {
-    max-width: 280px;
-}
-
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
-}
-
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
-    width: 100%;
-}
-
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
-}
-
-
-
-/* My Stuff */
-
-.content {
-    position: absolute;
-    padding: 10px;
-    max-height: 100%;
-}
-
-.background-image {
-    position: absolute;
-    width: 100%;
-}
-
-.foreground-text {
-    font-size: small;
-    padding: 50px 40px 20px 100px;
+.row {
+    max-height: 295px;
+    height: auto;
 }
 
 .centered {
     margin: auto;
-}
-
-.row {
-    height: auto;
-}
- 
-.row-height {
-    height: 300px;
-}
-
-.row-height * {
-    max-height: 295px;
-}
-.col-sm-6,
-.col-md-5,
-.col-md-4,
-.col-md-3,
-.col-md-2,
-.col-md-1,
-.col-lg-6,
-.col-lg-3,
-.col-lg-2,
-.col-lg-1 {
-    padding: 0;
-    height: 100%;
 }
 
 .image-square-rounded {
@@ -94,6 +28,18 @@ textarea {
     border-radius: 14px;
 }
 
+.background-image {
+    position: absolute;
+    width: 100%;
+}
+
+.foreground-text {
+    position: absolute;
+    font-size: small;
+    padding: 50px 40px 20px 100px;
+}
+
+ 
 
 
 
@@ -112,7 +58,7 @@ textarea {
 .product-image {
     width: 200px;
     height: 220px;
-    margin: 5px auto;
+    margin: auto;
 }
 
 .image-wrapper {
