@@ -33,6 +33,7 @@ function incrementItemInShoppingCart(id) {
         success: function (returnval) {
             var $qty = $('#qty-' + id)[0];
             $qty.innerText = parseInt($qty.innerText) + 1;
+            recalculate();
         },
         error: function (returnval) {
             alert('Error incrementing item in shopping cart :( ');
@@ -57,6 +58,7 @@ function decrementItemInShoppingCart(id) {
         dataType: 'json',
         success: function (returnval) {
             $qty.innerText = parseInt($qty.innerText) - 1;
+            recalculate();
         },
         error: function (returnval) {
             alert("Error decrementing item in shopping cart :( ");
@@ -76,9 +78,41 @@ function removeProductInShoppingCart(id) {
         success: function (returnval) {
             var $item = $('#item-' + id)[0];
             $item.remove();
+            recalculate();
         },
         error: function (returnval) {
-            alert("Error removing item from shopping cart :( ");
+            alert('Error removing item from shopping cart :( ');
         }
     });
+}
+
+function recalculate() {
+    var $itemDetailLines = $('.item-detail-line');
+    var extendedPriceTotal = 0;
+    var shippingTotal = 0;
+    $itemDetailLines.each(function () {
+        var linePrice = parseFloat($(this).find('.item-unit-price')[0].innerText.slice(1));
+        var lineQty = parseInt($(this).find('.item-qty-ct')[0].innerText);
+
+        var $itemExtendedPrice = $(this).find('.item-extended-price')[0];
+        var $itemShipping = $(this).find('.item-shipping')[0];
+        var $itemTotalPrice = $(this).find('.item-total-price')[0];
+        if (lineQty === 0) {
+            $itemShipping.innerText = '$0.00';
+        }
+        var itemExtendedPrice = 1.0 * linePrice * lineQty;
+        var itemShipping = parseFloat($itemShipping.innerText.slice(1));
+        var itemTotalPrice = 1.0 * itemExtendedPrice + itemShipping;
+
+        $itemExtendedPrice.innerHTML = '$' + itemExtendedPrice;
+        $itemShipping.innerHTML = '$' + itemShipping;
+        $itemTotalPrice.innerHTML = '$' + itemTotalPrice;
+
+        extendedPriceTotal += itemExtendedPrice;
+        shippingTotal += itemShipping;
+    });
+
+    $('.item-detail-total .item-extended-price')[0].innerText = '$' + extendedPriceTotal;
+    $('.item-detail-total .item-shipping')[0].innerText = '$' + shippingTotal;
+    $('.item-detail-total .item-total-price')[0].innerText = '$' + (extendedPriceTotal + shippingTotal);
 }
