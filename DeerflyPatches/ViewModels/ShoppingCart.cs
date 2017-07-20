@@ -68,8 +68,23 @@ namespace DeerflyPatches.ViewModels
 
         public List<OrderDetail> GetItems()
         {
+            // TODO: return clone to prevent writing to the data outside the class?
             return _shoppingCart;
         }
 
+        public decimal TotalExtendedPrice()
+        {
+            return _shoppingCart.Sum(p => p.ExtendedPrice());
+        }
+
+        public decimal TotalShipping()
+        {
+            return _shoppingCart.Sum(p => p.Shipping);
+        }
+
+        public decimal GrandTotal()
+        {
+            return TotalExtendedPrice() + TotalShipping();
+        }
     }
 }

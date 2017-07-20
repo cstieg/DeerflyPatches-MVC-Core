@@ -13,6 +13,7 @@
         <div class="hidden-xs col-md-2 item-shipping">Shipping</div>
         <div class="col-xs-4 col-md-2 item-shipping">Total Price</div>
     </div>
+    <hr />
 @foreach (var item in Model.GetItems())
 {
         <div class="row item-detail-line" id="item-@item.Item.ID">
@@ -27,6 +28,15 @@
             <div class="hidden-xs col-md-2 item-shipping">@item.Shipping</div>
             <div class="col-xs-4 col-md-2 item-shipping">@item.TotalPrice()</div>
         </div>
-
 }
+    <hr />
+    <div class="row item-detail-total">
+        <div class="col-xs-6 col-md-3 item-name">TOTAL:</div>
+        <div class="hidden-xs col-md-2 item-unit-price"></div>
+        <div class="col-xs-2 col-md-1 item-quantity"></div>
+        <div class="hidden-xs col-md-2 item-extended-price">@Model.TotalExtendedPrice()</div>
+        <div class="hidden-xs col-md-2 item-shipping">@Model.TotalShipping()</div>
+        <div class="col-xs-4 col-md-2 item-shipping">@Model.GrandTotal()</div>
+    </div>
+
 </div>
