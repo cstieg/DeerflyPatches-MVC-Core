@@ -48,10 +48,17 @@ function decrementItemInShoppingCart(id) {
         ID: id
     };
     var $qty = $('#qty-' + id)[0];
-    if ($qty.innerText < 1) {
-        alert("No items to remove!");
+
+    var qty = parseInt($qty.innerText);
+    if (qty < 1) {
+        alert('No items to remove!');
         return;
     }
+    if (qty === 1) {
+        alert('Minimum quantity of 1');
+        return;
+    }
+
     $.post({
         url: '/OrderDetails/DecrementItemInShoppingCart/',
         data: postData,
@@ -61,7 +68,7 @@ function decrementItemInShoppingCart(id) {
             recalculate();
         },
         error: function (returnval) {
-            alert("Error decrementing item in shopping cart :( ");
+            alert('Error decrementing item in shopping cart :( ');
         }
     });
 }
@@ -97,9 +104,7 @@ function recalculate() {
         var $itemExtendedPrice = $(this).find('.item-extended-price')[0];
         var $itemShipping = $(this).find('.item-shipping')[0];
         var $itemTotalPrice = $(this).find('.item-total-price')[0];
-        if (lineQty === 0) {
-            $itemShipping.innerText = '$0.00';
-        }
+
         var itemExtendedPrice = 1.0 * linePrice * lineQty;
         var itemShipping = parseFloat($itemShipping.innerText.slice(1));
         var itemTotalPrice = 1.0 * itemExtendedPrice + itemShipping;
