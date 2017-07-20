@@ -15,10 +15,14 @@
     </div>
 @foreach (var item in Model.GetItems())
 {
-        <div class="row item-detail-line">
+        <div class="row item-detail-line" id="item-@item.Item.ID">
             <div class="col-xs-6 col-md-3 item-name">@item.Item.Name</div>
             <div class="hidden-xs col-md-2 item-unit-price">@item.UnitPrice</div>
-            <div class="col-xs-2 col-md-1 item-quantity">@item.Quantity</div>
+            <div class="col-xs-2 col-md-1 item-quantity">
+                <button onclick="decrementItemInShoppingCart(@item.Item.ID)">-</button>
+                <span id="qty-@item.Item.ID">@item.Quantity</span>
+                <button onclick="incrementItemInShoppingCart(@item.Item.ID)">+</button>
+            </div>
             <div class="hidden-xs col-md-2 item-extended-price">@item.ExtendedPrice()</div>
             <div class="hidden-xs col-md-2 item-shipping">@item.Shipping</div>
             <div class="col-xs-4 col-md-2 item-shipping">@item.TotalPrice()</div>

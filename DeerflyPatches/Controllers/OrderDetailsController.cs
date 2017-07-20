@@ -164,18 +164,6 @@ namespace DeerflyPatches.Controllers
                 return NotFound();
             }
 
-            // TODO: Check if product ID number is currently in cart, if so, simply increment quantity 
-
-            // create new order detail entity
-            var newOrderDetail = new OrderDetail()
-            {
-                Item = product,
-                PlacedInCart = DateTime.Now,
-                Quantity = 1,
-                UnitPrice = product.Price,
-                Shipping = product.Shipping
-            };
-
             // Retrieve shopping cart from session
             ShoppingCart shoppingCart = HttpContext.Session.GetObjectFromJson<ShoppingCart>("_shopping_cart");
 
@@ -186,7 +174,60 @@ namespace DeerflyPatches.Controllers
             }
 
             // Add new order detail to session
-            shoppingCart.Add(newOrderDetail);
+            shoppingCart.AddProduct(product);
+            HttpContext.Session.SetObjectAsJson("_shopping_cart", shoppingCart);
+            return this.JsonOk();
+        }
+
+        [HttpPost, ActionName("DecrementItemInShoppingCart")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DecrementItemInShoppingCart(int id)
+        {
+            // look up product entity
+            Product product = await _context.Product.SingleOrDefaultAsync(m => m.ID == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            // Retrieve shopping cart from session
+            ShoppingCart shoppingCart = HttpContext.Session.GetObjectFromJson<ShoppingCart>("_shopping_cart");
+
+            // Create new shopping cart if none is in session
+            if (shoppingCart == null)
+            {
+                return NotFound();
+            }
+
+            // Add new order detail to session
+            shoppingCart.DecrementProduct(product);
+            HttpContext.Session.SetObjectAsJson("_shopping_cart", shoppingCart);
+            return this.JsonOk();
+        }
+
+
+        [HttpPost, ActionName("RemoveItemInShoppingCart")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveItemInShoppingCart(int id)
+        {
+            // look up product entity
+            Product product = await _context.Product.SingleOrDefaultAsync(m => m.ID == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            // Retrieve shopping cart from session
+            ShoppingCart shoppingCart = HttpContext.Session.GetObjectFromJson<ShoppingCart>("_shopping_cart");
+
+            // Create new shopping cart if none is in session
+            if (shoppingCart == null)
+            {
+                return NotFound();
+            }
+
+            // Add new order detail to session
+            shoppingCart.RemoveProduct(product);
             HttpContext.Session.SetObjectAsJson("_shopping_cart", shoppingCart);
             return this.JsonOk();
         }

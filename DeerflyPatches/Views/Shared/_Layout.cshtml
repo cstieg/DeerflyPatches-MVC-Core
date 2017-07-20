@@ -47,9 +47,11 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2017 - DeerflyPatches</p>
+            <p>&copy; 2017 - Detex</p>
         </footer>
     </div>
+
+    <span class="hidden-md" id="anti-forgery-token">@Html.AntiForgeryToken()</span>
 
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
