@@ -109,15 +109,15 @@ function recalculate() {
         var itemShipping = parseFloat($itemShipping.innerText.slice(1));
         var itemTotalPrice = 1.0 * itemExtendedPrice + itemShipping;
 
-        $itemExtendedPrice.innerHTML = '$' + itemExtendedPrice;
-        $itemShipping.innerHTML = '$' + itemShipping;
-        $itemTotalPrice.innerHTML = '$' + itemTotalPrice;
+        $itemExtendedPrice.innerHTML = '$' + itemExtendedPrice.toFixed(2);
+        $itemShipping.innerHTML = '$' + itemShipping.toFixed(2);
+        $itemTotalPrice.innerHTML = '$' + itemTotalPrice.toFixed(2);
 
         extendedPriceTotal += itemExtendedPrice;
         shippingTotal += itemShipping;
     });
 
-    $('.item-detail-total .item-extended-price')[0].innerText = '$' + extendedPriceTotal;
-    $('.item-detail-total .item-shipping')[0].innerText = '$' + shippingTotal;
-    $('.item-detail-total .item-total-price')[0].innerText = '$' + (extendedPriceTotal + shippingTotal);
+    $('.item-detail-total .item-extended-price')[0].innerText = '$' + extendedPriceTotal.toFixed(2);
+    $('.item-detail-total .item-shipping')[0].innerText = '$' + shippingTotal.toFixed(2);
+    $('.item-detail-total .item-total-price')[0].innerText = '$' + (extendedPriceTotal + shippingTotal).toFixed(2);
 }
