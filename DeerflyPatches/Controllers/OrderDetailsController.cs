@@ -187,9 +187,8 @@ namespace DeerflyPatches.Controllers
             // Add new order detail to session
             shoppingCart.Add(newOrderDetail);
             HttpContext.Session.SetObjectAsJson("_shopping_cart", shoppingCart);
-
-            return Redirect("/home/order");
+            return this.JsonOk();
         }
-
     }
+    
 }

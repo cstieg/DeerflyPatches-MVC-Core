@@ -12,8 +12,12 @@ function addToShoppingCart(id) {
         url: '/OrderDetails/AddOrderDetailToShoppingCart/',
         data: postData,
         dataType: 'json',
-        success: function() {
+        success: function(returnval) {
             alert("Success!");          
+        },
+        error: function (returnval) {
+            debugger;
+            alert("Error adding item to shopping cart :( ");
         }
     });
 }
