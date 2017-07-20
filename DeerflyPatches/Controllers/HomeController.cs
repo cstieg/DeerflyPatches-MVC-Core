@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using DeerflyPatches.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
+using DeerflyPatches.Modules;
 
 namespace DeerflyPatches.Controllers
 {
+
     public class HomeController : Controller
     {
         private readonly DeerflyPatchesContext _context;
@@ -30,7 +32,7 @@ namespace DeerflyPatches.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "About;
+            ViewData["Message"] = "About";
 
             return View();
         }

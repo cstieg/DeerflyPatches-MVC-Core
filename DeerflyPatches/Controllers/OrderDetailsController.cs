@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DeerflyPatches.Models;
+using Microsoft.AspNetCore.Http;
+using DeerflyPatches.Modules;
 
 namespace DeerflyPatches.Controllers
 {
@@ -148,5 +150,46 @@ namespace DeerflyPatches.Controllers
         {
             return _context.OrderDetail.Any(e => e.ID == id);
         }
+
+
+        [HttpPost, ActionName("AddOrderDetailToShoppingCart")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddOrderDetailToShoppingCart(int id)
+        {
+            // look up product entity
+            Product product = await _context.Product.SingleOrDefaultAsync(m => m.ID == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            // TODO: Check if product ID number is currently in cart, if so, simply increment quantity 
+
+            // create new order detail entity
+            var newOrderDetail = new OrderDetail()
+            {
+                Item = product,
+                PlacedInCart = DateTime.Now,
+                Quantity = 1,
+                UnitPrice = product.Price,
+                Shipping = product.Shipping
+            };
+
+            // Retrieve shopping cart from session
+            ShoppingCart shoppingCart = HttpContext.Session.GetObjectFromJson<ShoppingCart>("_shopping_cart");
+
+            // Create new shopping cart if none is in session
+            if (shoppingCart == null)
+            {
+                shoppingCart = new ShoppingCart();
+            }
+
+            // Add new order detail to session
+            shoppingCart.Add(newOrderDetail);
+            HttpContext.Session.SetObjectAsJson("_shopping_cart", shoppingCart);
+
+            return Redirect("/home/order");
+        }
+
     }
 }
