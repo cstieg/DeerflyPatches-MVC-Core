@@ -16,14 +16,11 @@
             <p class="product-price">$@item.Price</p>
             <div class="button-container">
                 <button class="btn">Buy Now</button>
-                <form asp-controller="OrderDetails" asp-action="AddOrderDetailToShoppingCart">
-                    <div class="form-actions no-color">
-                        <input type="hidden" name="id" value="@item.ID" />
-                        <input type="submit" value="Add to Shopping Cart" class="btn btn-default" /> |
-                    </div>
-                </form>
+                <button class="btn" onclick="addToShoppingCart(@item.ID)">Add to Shopping Cart</button>
             </div>
         </article>
 }
     </div>
 </div>
+
+<span class="hidden-md" id="anti-forgery-token">@Html.AntiForgeryToken()</span>

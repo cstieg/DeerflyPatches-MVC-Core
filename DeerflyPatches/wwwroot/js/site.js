@@ -1,7 +1,11 @@
-﻿// Write your Javascript code.
+﻿function antiForgeryToken() {
+    return $('#anti-forgery-token input')[0].value;
+}
+
+
 function addToShoppingCart(id) {
-    debugger;
     var postData = {
+        __RequestVerificationToken: antiForgeryToken(),
         ID: id
     };
     $.post({
@@ -13,3 +17,4 @@ function addToShoppingCart(id) {
         }
     });
 }
+
