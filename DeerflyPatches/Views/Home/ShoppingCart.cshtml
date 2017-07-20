@@ -1,0 +1,28 @@
+﻿@model DeerflyPatches.ViewModels.ShoppingCart
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<div class="container">
+    <div class="row item-detail-header">
+        <div class="col-xs-6 col-md-3 item-name">Product</div>
+        <div class="hidden-xs col-md-2 item-unit-price">Unit Price</div>
+        <div class="col-xs-2 col-md-1 item-quantity">Quantity</div>
+        <div class="hidden-xs col-md-2 item-extended-price">Price</div>
+        <div class="hidden-xs col-md-2 item-shipping">Shipping</div>
+        <div class="col-xs-4 col-md-2 item-shipping">Total Price</div>
+    </div>
+@foreach (var item in Model.GetItems())
+{
+        <div class="row item-detail-line">
+            <div class="col-xs-6 col-md-3 item-name">@item.Item.Name</div>
+            <div class="hidden-xs col-md-2 item-unit-price">@item.UnitPrice</div>
+            <div class="col-xs-2 col-md-1 item-quantity">@item.Quantity</div>
+            <div class="hidden-xs col-md-2 item-extended-price">@item.ExtendedPrice()</div>
+            <div class="hidden-xs col-md-2 item-shipping">@item.Shipping</div>
+            <div class="col-xs-4 col-md-2 item-shipping">@item.TotalPrice()</div>
+        </div>
+
+}
+</div>
