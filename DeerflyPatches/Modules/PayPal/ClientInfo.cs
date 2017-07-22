@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
-namespace DeerflyPatches.Modules
+namespace DeerflyPatches.Modules.PayPal
 {
     [DataContract]
     public class ClientInfo

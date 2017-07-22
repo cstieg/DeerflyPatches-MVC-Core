@@ -152,7 +152,7 @@ namespace DeerflyPatches.Controllers
             return _context.Order.Any(e => e.ID == id);
         }
 
-        public JsonResult getShoppingCartJSON()
+        public JsonResult GetShoppingCartJSON()
         {
             return Json(HttpContext.Session.GetObjectFromJson<ShoppingCart>("_shopping_cart"));
         }

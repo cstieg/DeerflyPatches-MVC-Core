@@ -13,6 +13,7 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using System.Text;
 using System.Net;
+using DeerflyPatches.Modules.PayPal;
 
 namespace DeerflyPatches.Controllers
 {
@@ -33,36 +34,11 @@ namespace DeerflyPatches.Controllers
 
             PayPalApiClient paypalClient = new PayPalApiClient();
 
-            // Get client id
+            // Get client id from paypal.json
             ClientInfo paypalSecrets = paypalClient.GetClientSecrets(_env.ContentRootPath);
 
-            string client_id = paypalSecrets.ClientId;
-            string client_secret = paypalSecrets.ClientSecret;
-
-            var access_token = "";
-
             // Get access token
-            // TODO: Store access token to reuse until expires
-            using (var client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("en_US"));
-
-                var byteArray = Encoding.ASCII.GetBytes(client_id + ":" + client_secret);
-                var header = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-                client.DefaultRequestHeaders.Authorization = header;
-
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://api.sandbox.paypal.com/v1/oauth2/token");
-                request.Content = new FormUrlEncodedContent(new[]
-                {
-                    new KeyValuePair<string, string>("grant_type", "client_credentials"),
-                });
-
-                var response = await client.SendAsync(request);
-                var result = response.Content.ReadAsStringAsync().Result;
-                access_token = new JsonDeserializer(result).GetString("access_token");
-            }
-
+            AccessToken access_token = await paypalClient.GetAccessToken(paypalSecrets);
 
 
             // Create order object
@@ -131,7 +107,7 @@ namespace DeerflyPatches.Controllers
             string orderId = "";
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", access_token);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", access_token.AccessTokenString);
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://api.sandbox.paypal.com/v1/payments/payment");
                 request.Content = new StringContent(dataJSON, Encoding.UTF8, "application/json");
                 var response = await client.SendAsync(request);
