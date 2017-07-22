@@ -121,3 +121,16 @@ function recalculate() {
     $('.item-detail-total .item-shipping')[0].innerText = '$' + shippingTotal.toFixed(2);
     $('.item-detail-total .item-total-price')[0].innerText = '$' + (extendedPriceTotal + shippingTotal).toFixed(2);
 }
+
+
+function payWithPayPal() {
+    $.post({
+        url: '/PayPal/CreateOrder',
+        success: function(result) {
+            debugger;
+        },
+        error: function(result) {
+            debugger;
+        }
+    });
+}

@@ -72,19 +72,29 @@ namespace DeerflyPatches.ViewModels
             return _shoppingCart;
         }
 
-        public decimal TotalExtendedPrice()
+        public decimal TotalExtendedPrice
         {
-            return _shoppingCart.Sum(p => p.ExtendedPrice());
+            get
+            {
+                return _shoppingCart.Sum(p => p.ExtendedPrice());
+            }
         }
 
-        public decimal TotalShipping()
+        public decimal TotalShipping
         {
-            return _shoppingCart.Sum(p => p.Shipping);
+            get
+            {
+                return _shoppingCart.Sum(p => p.Shipping);
+            }
         }
 
-        public decimal GrandTotal()
+        public decimal GrandTotal
         {
-            return TotalExtendedPrice() + TotalShipping();
+            get
+            {
+                return TotalExtendedPrice + TotalShipping;
+            }
         }
+
     }
 }

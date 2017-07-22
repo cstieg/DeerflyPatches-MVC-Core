@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DeerflyPatches.Models;
+using Microsoft.AspNetCore.Http;
+using DeerflyPatches.Modules;
+using DeerflyPatches.ViewModels;
 
 namespace DeerflyPatches.Controllers
 {
@@ -147,6 +150,11 @@ namespace DeerflyPatches.Controllers
         private bool OrderExists(int id)
         {
             return _context.Order.Any(e => e.ID == id);
+        }
+
+        public JsonResult getShoppingCartJSON()
+        {
+            return Json(HttpContext.Session.GetObjectFromJson<ShoppingCart>("_shopping_cart"));
         }
     }
 }
