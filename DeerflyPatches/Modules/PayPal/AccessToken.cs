@@ -15,7 +15,7 @@ namespace DeerflyPatches.Modules.PayPal
         [DataMember(Name = "nonce")]
         public string Nonce { get; set; }
 
-        [DataMember(Name = "Access-Token")]
+        [DataMember(Name = "access_token")]
         public string AccessTokenString { get; set; }
 
         [DataMember(Name = "token_type")]

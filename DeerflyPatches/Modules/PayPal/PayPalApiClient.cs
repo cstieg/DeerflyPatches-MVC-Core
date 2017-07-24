@@ -1,4 +1,6 @@
-﻿using DeerflyPatches.ViewModels;
+﻿using DeerflyPatches.Models;
+using DeerflyPatches.ViewModels;
+using DeerflyPatches.Modules;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,6 +9,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DeerflyPatches.Modules.PayPal
 {
@@ -60,43 +63,23 @@ namespace DeerflyPatches.Modules.PayPal
                         amount = new
                         {
                             currency = "USD",
-                            total = "10.00",
+                            total = shoppingCart.GrandTotal,
                             details = new
                             {
-                                shipping = "0.00",
-                                subtotal = "10.00",
+                                shipping = shoppingCart.TotalShipping,
+                                subtotal = shoppingCart.TotalExtendedPrice,
                                 tax = "0.00"
                             }
                         },
                         payee = new
                         {
-                            email = "cstieg4899-facilitator@yahoo.com"
+                            email = shoppingCart.payeeEmail
                         },
                         description = "Order from Detex, manufacturer of Deerfly Patches",
                         item_list = new
                         {
-                            items = new List<Object>
-                            {
-                                new
-                                {
-                                    name = "DFP",
-                                    quantity = "1",
-                                    price = "10.00",
-                                    sku = "1",
-                                    currency = "USD"
-                                }
-                            },
-                            shipping_address = new
-                            {
-                                recipient_name = "Christopher Stieg",
-                                line1 = "17852 Ten Mile Road",
-                                line2 = "",
-                                city = "LeRoy",
-                                country_code = "US",
-                                postal_code = "49655",
-                                phone = "2316800095",
-                                state = "MI"
-                            }
+                            items = getPayPalItems(shoppingCart),
+                            shipping_address = getPayPalAddress(shoppingCart.GetOrder().ShipTo)
                         }
                     }
                 },
@@ -112,7 +95,7 @@ namespace DeerflyPatches.Modules.PayPal
 
         public async Task<string> PostOrder(string data, string accessToken)
         {
-
+            string result;
             string orderId = "";
             using (var client = new HttpClient())
             {
@@ -120,11 +103,53 @@ namespace DeerflyPatches.Modules.PayPal
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://api.sandbox.paypal.com/v1/payments/payment");
                 request.Content = new StringContent(data, Encoding.UTF8, "application/json");
                 var response = await client.SendAsync(request);
-                var result = response.Content.ReadAsStringAsync().Result;
+                result = response.Content.ReadAsStringAsync().Result;
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new HttpRequestException(result.ToString());
+                }
                 orderId = new JsonDeserializer(result).GetString("id");
             }
-            return orderId;
+            return result;
         }
 
+        private object getPayPalAddress(Address address)
+        {
+            return new
+            {
+                recipient_name = address.Recipient,
+                line1 = address.Address1,
+                line2 = address.Address2,
+                city = address.City,
+                country_code = address.Country,
+                postal_code = address.Zip,
+                phone = address.Phone,
+                state = address.State
+            };
+        }
+
+        private object getPayPalItem(OrderDetail orderDetail)
+        {
+            return new
+            {
+                name = orderDetail.Item.Name,
+                quantity = orderDetail.Quantity,
+                price = orderDetail.ExtendedPrice,
+                sku = orderDetail.Item.ID,
+                currency = "USD"
+            };
+        }
+
+        private List<object> getPayPalItems(ShoppingCart shoppingCart)
+        {
+            List<object> items = new List<object>();
+            List<OrderDetail> shoppingCartItems = shoppingCart.GetItems();
+
+            for (int i = 0; i < shoppingCartItems.Count; i++)
+            {
+                items.Add(getPayPalItem(shoppingCartItems[i]));
+            }
+            return items;
+        }
     }
 }

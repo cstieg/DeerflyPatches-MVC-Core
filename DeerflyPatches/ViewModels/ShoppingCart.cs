@@ -10,6 +10,30 @@ namespace DeerflyPatches.ViewModels
     {
         public DeerflyPatches.Models.Order _order;
         public List<OrderDetail> _shoppingCart { get; set; }
+        public string payeeEmail { get; set; }
+        public decimal TotalExtendedPrice
+        {
+            get
+            {
+                return _shoppingCart.Sum(p => p.ExtendedPrice);
+            }
+        }
+
+        public decimal TotalShipping
+        {
+            get
+            {
+                return _shoppingCart.Sum(p => p.Shipping);
+            }
+        }
+
+        public decimal GrandTotal
+        {
+            get
+            {
+                return TotalExtendedPrice + TotalShipping;
+            }
+        }
 
         public ShoppingCart()
         {
@@ -17,6 +41,17 @@ namespace DeerflyPatches.ViewModels
             _order = new DeerflyPatches.Models.Order();
         }
 
+        public List<OrderDetail> GetItems()
+        {
+            // TODO: return clone to prevent writing to the data outside the class?
+            return _shoppingCart;
+        }
+
+        public Order GetOrder()
+        {
+            // TODO: return clone to prevent writing to the data outside the class?
+            return _order;
+        }
 
         public void AddOrderDetail(OrderDetail newItem)
         {
@@ -66,35 +101,7 @@ namespace DeerflyPatches.ViewModels
             }
         }
 
-        public List<OrderDetail> GetItems()
-        {
-            // TODO: return clone to prevent writing to the data outside the class?
-            return _shoppingCart;
-        }
 
-        public decimal TotalExtendedPrice
-        {
-            get
-            {
-                return _shoppingCart.Sum(p => p.ExtendedPrice());
-            }
-        }
-
-        public decimal TotalShipping
-        {
-            get
-            {
-                return _shoppingCart.Sum(p => p.Shipping);
-            }
-        }
-
-        public decimal GrandTotal
-        {
-            get
-            {
-                return TotalExtendedPrice + TotalShipping;
-            }
-        }
 
     }
 }

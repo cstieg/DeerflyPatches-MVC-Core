@@ -156,5 +156,6 @@ namespace DeerflyPatches.Controllers
         {
             return Json(HttpContext.Session.GetObjectFromJson<ShoppingCart>("_shopping_cart"));
         }
+
     }
 }

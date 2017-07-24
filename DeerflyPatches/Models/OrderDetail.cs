@@ -17,14 +17,21 @@ namespace DeerflyPatches.Models
         public bool CheckedOut { get; set; }
         public Order Order { get; set; }
 
-        public decimal ExtendedPrice()
+        public decimal ExtendedPrice
         {
-            return Quantity * UnitPrice;
+            get
+            {
+                return Quantity * UnitPrice;
+            }
+
         }
 
-        public decimal TotalPrice()
+        public decimal TotalPrice
         {
-            return ExtendedPrice() + Shipping;
+            get 
+            {
+                return ExtendedPrice + Shipping;
+            }
         }
     }
 }

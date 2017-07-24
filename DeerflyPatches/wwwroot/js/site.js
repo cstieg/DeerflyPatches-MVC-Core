@@ -123,11 +123,14 @@ function recalculate() {
 }
 
 
-function payWithPayPal() {
+function updateShippingAddress() {
+    var formdata = $('#shipping-address').serializeArray();
     $.post({
-        url: '/PayPal/CreateOrder',
-        success: function(result) {
-            debugger;
+        url: '/Addresses/UpdateShippingAddress',
+        data: formdata,
+        dataType: 'json',
+        success: function(result, data) {
+            
         },
         error: function(result) {
             debugger;

@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DeerflyPatches.Models;
+using Microsoft.AspNetCore.Http;
+using DeerflyPatches.Modules;
+using DeerflyPatches.ViewModels;
 
 namespace DeerflyPatches.Controllers
 {
@@ -147,6 +150,31 @@ namespace DeerflyPatches.Controllers
         private bool AddressExists(int id)
         {
             return _context.Address.Any(e => e.ID == id);
+        }
+
+        [HttpPost, ActionName("UpdateShippingAddress")]
+        public IActionResult UpdateShippingAddress(IFormCollection data)
+        {
+
+            Address shippingAddress = new Address();
+            shippingAddress.Recipient = Request.Form["ship-to"];
+            shippingAddress.Address1 = Request.Form["address1"];
+            shippingAddress.Address2 = Request.Form["address2"];
+            shippingAddress.City = Request.Form["city"];
+            shippingAddress.State = Request.Form["state"];
+            shippingAddress.Zip = Request.Form["zip"];
+            shippingAddress.Country = Request.Form["country"];
+            shippingAddress.Phone = Request.Form["phone"];
+
+            // Get shopping cart from session
+            ShoppingCart shoppingCart = HttpContext.Session.GetObjectFromJson<ShoppingCart>("_shopping_cart");
+            shoppingCart.GetOrder().ShipTo = shippingAddress;
+            HttpContext.Session.SetObjectAsJson("_shopping_cart", shoppingCart);
+
+            // TODO: Save address to model
+
+
+            return this.JsonOk();
         }
     }
 }
