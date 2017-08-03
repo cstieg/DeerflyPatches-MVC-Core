@@ -8,9 +8,10 @@ using DeerflyPatches.Models;
 namespace DeerflyPatches.Migrations
 {
     [DbContext(typeof(DeerflyPatchesContext))]
-    partial class DeerflyPatchesContextModelSnapshot : ModelSnapshot
+    [Migration("20170725020340_MinusOwner")]
+    partial class MinusOwner
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")

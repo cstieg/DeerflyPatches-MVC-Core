@@ -8,9 +8,10 @@ using DeerflyPatches.Models;
 namespace DeerflyPatches.Migrations
 {
     [DbContext(typeof(DeerflyPatchesContext))]
-    partial class DeerflyPatchesContextModelSnapshot : ModelSnapshot
+    [Migration("20170724214144_Promo")]
+    partial class Promo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -29,6 +30,8 @@ namespace DeerflyPatches.Migrations
 
                     b.Property<string>("Country");
 
+                    b.Property<int?>("OwnerID");
+
                     b.Property<string>("Phone");
 
                     b.Property<string>("Recipient");
@@ -38,6 +41,8 @@ namespace DeerflyPatches.Migrations
                     b.Property<string>("Zip");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("OwnerID");
 
                     b.ToTable("Address");
                 });
@@ -146,44 +151,11 @@ namespace DeerflyPatches.Migrations
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("DeerflyPatches.Models.PromoCode", b =>
+            modelBuilder.Entity("DeerflyPatches.Models.Address", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Code");
-
-                    b.Property<DateTime>("CodeEnd");
-
-                    b.Property<DateTime>("CodeStart");
-
-                    b.Property<string>("Description");
-
-                    b.Property<decimal>("MinimumQualifyingPurchase");
-
-                    b.Property<decimal>("PercentOffItem");
-
-                    b.Property<decimal>("PercentOffOrder");
-
-                    b.Property<int?>("PromotionalItemID");
-
-                    b.Property<decimal>("PromotionalItemPrice");
-
-                    b.Property<decimal>("SpecialPrice");
-
-                    b.Property<int?>("SpecialPriceItemID");
-
-                    b.Property<int?>("WithPurchaseOfID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("PromotionalItemID");
-
-                    b.HasIndex("SpecialPriceItemID");
-
-                    b.HasIndex("WithPurchaseOfID");
-
-                    b.ToTable("PromoCode");
+                    b.HasOne("DeerflyPatches.Models.Customer", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerID");
                 });
 
             modelBuilder.Entity("DeerflyPatches.Models.Order", b =>
@@ -214,21 +186,6 @@ namespace DeerflyPatches.Migrations
                     b.HasOne("DeerflyPatches.Models.Customer", "Purchaser")
                         .WithMany()
                         .HasForeignKey("PurchaserID");
-                });
-
-            modelBuilder.Entity("DeerflyPatches.Models.PromoCode", b =>
-                {
-                    b.HasOne("DeerflyPatches.Models.Product", "PromotionalItem")
-                        .WithMany()
-                        .HasForeignKey("PromotionalItemID");
-
-                    b.HasOne("DeerflyPatches.Models.Product", "SpecialPriceItem")
-                        .WithMany()
-                        .HasForeignKey("SpecialPriceItemID");
-
-                    b.HasOne("DeerflyPatches.Models.Product", "WithPurchaseOf")
-                        .WithMany()
-                        .HasForeignKey("WithPurchaseOfID");
                 });
         }
     }

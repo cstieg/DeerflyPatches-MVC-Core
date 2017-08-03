@@ -23,5 +23,9 @@ namespace DeerflyPatches.Models
         public DbSet<DeerflyPatches.Models.Order> Order { get; set; }
 
         public DbSet<DeerflyPatches.Models.OrderDetail> OrderDetail { get; set; }
+
+        public DbSet<DeerflyPatches.Models.PromoCode> PromoCode { get; set; }
     }
 }
+
+

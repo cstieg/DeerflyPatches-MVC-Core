@@ -8,9 +8,10 @@ using DeerflyPatches.Models;
 namespace DeerflyPatches.Migrations
 {
     [DbContext(typeof(DeerflyPatchesContext))]
-    partial class DeerflyPatchesContextModelSnapshot : ModelSnapshot
+    [Migration("20170725004820_Promo1")]
+    partial class Promo1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -29,6 +30,8 @@ namespace DeerflyPatches.Migrations
 
                     b.Property<string>("Country");
 
+                    b.Property<int?>("OwnerID");
+
                     b.Property<string>("Phone");
 
                     b.Property<string>("Recipient");
@@ -38,6 +41,8 @@ namespace DeerflyPatches.Migrations
                     b.Property<string>("Zip");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("OwnerID");
 
                     b.ToTable("Address");
                 });
@@ -184,6 +189,13 @@ namespace DeerflyPatches.Migrations
                     b.HasIndex("WithPurchaseOfID");
 
                     b.ToTable("PromoCode");
+                });
+
+            modelBuilder.Entity("DeerflyPatches.Models.Address", b =>
+                {
+                    b.HasOne("DeerflyPatches.Models.Customer", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerID");
                 });
 
             modelBuilder.Entity("DeerflyPatches.Models.Order", b =>

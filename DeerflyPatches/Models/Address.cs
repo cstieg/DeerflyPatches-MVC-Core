@@ -17,5 +17,12 @@ namespace DeerflyPatches.Models
         public string Zip { get; set; }
         public string Country { get; set; }
         public string Phone { get; set; }
+        public AddressType Type { get; set; }
+    }
+
+    public enum AddressType
+    {
+        Billing,
+        Shipping
     }
 }
